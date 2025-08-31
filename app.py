@@ -10,7 +10,7 @@ app = Flask(__name__)
 db = mysql.connector.connect(
     host=os.getenv("DB_HOST", "localhost"),
     user=os.getenv("DB_USER", "root"),
-    password=os.getenv("DB_PASSWORD", "Graytness_15MySQL20"),
+    password=os.getenv("DB_PASSWORD", ""),
     database=os.getenv("DB_NAME", "mood_journal")
 )
 cursor = db.cursor()
@@ -27,7 +27,7 @@ def get_emotion(text, use_dummy=False):
         return label, score
     
     try:
-        response = requests.post(HF_API_URL, headers=HF_HEADERS, json={"inputs": text})
+        response = requests.post(HF_API_URL, headers=HF_HEADERS, json={"inputs": text}, timeout=60)
         result = response.json()
         if isinstance(result, list) and len(result) > 0:
             return result[0]['label'], float(result[0].get('score', 0))
@@ -62,6 +62,7 @@ def get_data():
     data = cursor.fetchall()
     return jsonify(data)
 
+# ---- Run app ----
 if __name__ == "__main__":
-    import os
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
