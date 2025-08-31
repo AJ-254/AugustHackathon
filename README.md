@@ -1,7 +1,7 @@
 # AI-Powered Mood Journal
 
 **Project Type:** Web Application  
-**Tech Stack:** Python, Flask, MySQL, HTML/CSS/JS, Chart.js  
+**Tech Stack:** Python, Flask, SQLite, HTML/CSS/JS, Chart.js  
 
 ---
 
@@ -25,27 +25,24 @@ The AI-Powered Mood Journal is a web app that allows users to record daily journ
 ```bash
 pip install -r requirements.txt
 
-### Set environment variables:
-export DB_HOST=your_mysql_host
-export DB_USER=your_mysql_user
-export DB_PASSWORD=your_mysql_password
-export DB_NAME=your_database_name
+Set environment variables:
 export HF_API_TOKEN=your_huggingface_token
 
-## Run the app locally:
+Run the app locally:
 python app.py
 
-## Open your browser at:
+Open your browser at:
 http://localhost:5000
 
 Project Structure
 mood-journal/
-├─ app.py                # Flask backend
-├─ requirements.txt      # Python dependencies
+├─ app.py              # Flask backend using SQLite
+├─ requirements.txt    # Python dependencies
 ├─ templates/
-│   └─ index.html        # Frontend HTML
+│   └─ index.html      # Frontend HTML
 ├─ static/
-│   └─ script.js         # JS for charts
+│   └─ script.js       # JS for charts
+├─ README.md
 
 Demo
 
