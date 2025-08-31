@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mood Journal</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; text-align: center; }
+        textarea { width: 100%; margin: 10px 0; padding: 10px; }
+        button { padding: 10px 20px; }
+        canvas { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>AI-Powered Mood Journal</h1>
+
+    <form id="journalForm" method="POST" action="/submit">
+        <label for="dummyToggle">
+            <input type="checkbox" id="dummyToggle" name="dummyToggle">
+            Use Dummy Mode (Green = Demo, Red = Real AI)
+        </label><br><br>
+
+        <label for="entry">Your Journal Entry:</label><br>
+        <textarea id="entry" name="entry" rows="4" cols="50" required></textarea><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Mood Trends</h2>
+    <canvas id="moodChart" width="400" height="200"></canvas>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
