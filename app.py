@@ -1,19 +1,25 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for
-import mysql.connector
+import sqlite3
 import requests
 import random
 import os
 
 app = Flask(__name__)
 
-# ---- MySQL Setup ----
-db = mysql.connector.connect(
-    host=os.getenv("DB_HOST", "localhost"),
-    user=os.getenv("DB_USER", "root"),
-    password=os.getenv("DB_PASSWORD", ""),
-    database=os.getenv("DB_NAME", "mood_journal")
-)
+# ---- SQLite Setup ----
+db = sqlite3.connect("mood_journal.db", check_same_thread=False)
 cursor = db.cursor()
+
+# Create table if it doesn't exist
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS entries (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    text TEXT,
+    mood_label TEXT,
+    mood_score REAL
+)
+""")
+db.commit()
 
 # ---- Hugging Face API ----
 HF_API_URL = "https://api-inference.huggingface.co/models/distilbert-base-uncased-finetuned-sst-2-english"
@@ -49,7 +55,7 @@ def submit():
     label, score = get_emotion(entry, use_dummy)
     
     cursor.execute(
-        "INSERT INTO entries (text, mood_label, mood_score) VALUES (%s, %s, %s)",
+        "INSERT INTO entries (text, mood_label, mood_score) VALUES (?, ?, ?)",
         (entry, label, score)
     )
     db.commit()
